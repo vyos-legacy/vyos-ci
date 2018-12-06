@@ -29,7 +29,7 @@ node("jessie-amd64") {
     def workspace = pwd()
 
     stage('Checkout') {
-        // deleteDir()
+        deleteDir()
         checkout scm
 
         // Parallel fetch all required Git source repositories
@@ -66,9 +66,7 @@ node("jessie-amd64") {
             //    status: 'PENDING',
             //    description: 'This build is pending'
             try {
-                //sh "../build-kernel.sh"
-                echo ("build kernel")
-
+                sh "../build-kernel.sh"
             } catch(Exception e) {
                 echo("error compiling kernel")
             }
