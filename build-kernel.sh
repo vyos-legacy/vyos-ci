@@ -28,6 +28,7 @@ case "$ARCH" in
         if [ ${PATCHLEVEL} -lt 14 ]; then
             TARGETS+=" kernel_manual kernel_doc"
         fi
+        echo "$VERSION.$PATCHLEVEL.$SUBLEVEL-amd64-vyos" > ../kernel-version
         LOCALVERSION="" make-kpkg --rootcmd fakeroot --initrd --append_to_version -amd64-vyos --revision=$VERSION.$PATCHLEVEL.$SUBLEVEL-1+vyos1+current1 ${TARGETS}
     ;;
 

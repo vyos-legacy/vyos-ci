@@ -21,13 +21,7 @@ def getRepoName() {
   return sh(returnStdout: true, script: "git config --get remote.origin.url | sed 's%^.*/\\([^/]*\\)\\.git\$%\\1%g'").trim()
 }
 
-def branch = 'current'
-def sshUser = 'khagen'
-def sshHost = 'dev.packages.vyos.net'
-
 node("jessie-amd64") {
-    def workspace = pwd()
-
     stage('Checkout') {
         deleteDir()
         checkout scm
@@ -42,13 +36,13 @@ node("jessie-amd64") {
             },
             "vyos-wireguard": {
                 dir('vyos-wireguard') {
-                    git branch: branch,
+                    git branch: 'current',
                         url: 'https://github.com/vyos/vyos-wireguard.git'
                 }
             },
             "vyos-accell-ppp": {
                 dir('vyos-accel-ppp') {
-                    git branch: branch,
+                    git branch: 'current',
                         url: 'https://github.com/vyos/vyos-accel-ppp.git'
                 }
             }
@@ -76,24 +70,36 @@ node("jessie-amd64") {
         parallel (
             "wireguard": {
                 dir('vyos-wireguard') {
-                    sh "KERNELDIR=${workspace}/vyos-kernel dpkg-buildpackage -b -us -uc -tc"
+                    sh '''
+                        #!/bin/bash
+                        KERNEL_VER=$(cat ../kernel-version)
+                        DPKG_MOD_INST="debian/wireguard-modules.install"
+                        echo "src/wireguard.ko /lib/modules/${KERNEL_VER}/extra" > ${DPKG_MOD_INST}
+                        KERNELDIR=$(pwd)/../vyos-kernel dpkg-buildpackage -b -us -uc -tc
+                    '''
                 }
             },
             "accel-ppp": {
                 dir('vyos-accel-ppp') {
-                    sh "KERNELDIR=${workspace}/vyos-kernel dpkg-buildpackage -b -us -uc -tc"
+                    sh '''
+                        #!/bin/sh
+                        KERNEL_VER=$(cat ../kernel-version)
+                        DPKG_MOD_INST="debian/vyos-accel-ppp-ipoe-kmod.install"
+                        echo "lib/modules/${KERNEL_VER}/extra/*.ko" > ${DPKG_MOD_INST}
+                        KERNELDIR=$(pwd)/../vyos-kernel dpkg-buildpackage -b -us -uc -tc
+                    '''
                 }
             }
         )
     }
-    stage('Deploy') {
-        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
-            sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
-                sh """
-                    #!/usr/bin/env bash
-                    ./pkg-build.sh current "*.deb"
-                """
-            }
-        }
-    }
+//    stage('Deploy') {
+//        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
+//            sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
+//                sh """
+//                    #!/usr/bin/env bash
+//                    ./pkg-build.sh current "*.deb"
+//                """
+//            }
+//        }
+//    }
 }
