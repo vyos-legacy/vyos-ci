@@ -86,7 +86,7 @@ node("jessie-amd64") {
                         KERNEL_VER=$(cat ../kernel-version)
                         DPKG_MOD_INST="debian/vyos-accel-ppp-ipoe-kmod.install"
                         echo "lib/modules/${KERNEL_VER}/extra/*.ko" > ${DPKG_MOD_INST}
-                        sed -i "s@[0-9].[0-9][0-9].[0-9].*//@"${KERNEL_VER}"/@" debian/rules
+                        sed -i "s#[0-9].[0-9][0-9].[0-9]-amd64-vyos#"${KERNEL_VER}"#g" debian/rules
                         cat debian/rules
                         KERNELDIR=$(pwd)/../vyos-kernel dpkg-buildpackage -b -us -uc -tc
                     '''
