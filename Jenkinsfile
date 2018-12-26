@@ -86,20 +86,22 @@ node("jessie-amd64") {
                         KERNEL_VER=$(cat ../kernel-version)
                         DPKG_MOD_INST="debian/vyos-accel-ppp-ipoe-kmod.install"
                         echo "lib/modules/${KERNEL_VER}/extra/*.ko" > ${DPKG_MOD_INST}
+                        sed -i "s@[0-9].[0-9][0-9].[0-9].*/@"${KERNEL_VER}"/@" debian/rules
+                        cat debian/rules
                         KERNELDIR=$(pwd)/../vyos-kernel dpkg-buildpackage -b -us -uc -tc
                     '''
                 }
             }
         )
     }
-//    stage('Deploy') {
-//        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
-//            sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
-//                sh """
-//                    #!/usr/bin/env bash
-//                    ./pkg-build.sh current "*.deb"
-//                """
-//            }
-//        }
-//    }
+    stage('Deploy') {
+        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
+            sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
+                sh """
+                    #!/usr/bin/env bash
+                    ./pkg-build.sh current "*.deb"
+                """
+            }
+        }
+    }
 }
