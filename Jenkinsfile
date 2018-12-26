@@ -82,7 +82,7 @@ node("jessie-amd64") {
             "accel-ppp": {
                 dir('vyos-accel-ppp') {
                     sh '''
-                        #!/bin/sh
+                        #!/bin/bash
                         KERNEL_VER=$(cat ../kernel-version)
                         DPKG_MOD_INST="debian/vyos-accel-ppp-ipoe-kmod.install"
                         echo "lib/modules/${KERNEL_VER}/extra/*.ko" > ${DPKG_MOD_INST}
