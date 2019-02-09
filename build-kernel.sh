@@ -29,7 +29,7 @@ case "$ARCH" in
             TARGETS+=" kernel_manual kernel_doc"
         fi
         echo "$VERSION.$PATCHLEVEL.$SUBLEVEL-amd64-vyos" > ../kernel-version
-        LOCALVERSION="" make-kpkg --rootcmd fakeroot --initrd --append_to_version -amd64-vyos --revision=$VERSION.$PATCHLEVEL.$SUBLEVEL-1+vyos1+current1 ${TARGETS}
+        LOCALVERSION="" make-kpkg --rootcmd fakeroot --initrd --append_to_version -amd64-vyos --revision=$VERSION.$PATCHLEVEL.$SUBLEVEL-0+vyos+current0 ${TARGETS} -j$(cat /proc/cpuinfo | grep processor | wc -l)
     ;;
 
     armhf)
