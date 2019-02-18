@@ -1,0 +1,4 @@
+*.deb
+vyos-**/
+intel/
+kernel-version
