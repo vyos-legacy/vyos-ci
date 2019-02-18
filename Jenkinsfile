@@ -91,11 +91,19 @@ node("jessie-amd64") {
                         KERNELDIR=$(pwd)/../vyos-kernel dpkg-buildpackage -b -us -uc -tc
                     '''
                 }
+            },
+            "intel-drivers": {
+                sh '''
+                    #!/bin/bash
+                    ./build-intel-drivers.sh
+                    dir
+                '''
             }
         )
     }
+
     stage('Deploy') {
-        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
+        if ((currentBuild.result == null) || currentBuild.result == 'SUCCESS' ()) {
             sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
                 sh """
                     #!/usr/bin/env bash
