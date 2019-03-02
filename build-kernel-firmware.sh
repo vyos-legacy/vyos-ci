@@ -28,7 +28,16 @@ echo "  redistribute under separate cover." >>$deb_pkg_dir/DEBIAN/control
 
 cd $basedir
 
-# We do not need to pack up the git repository itself :)
-rm -rf $deb_pkg_dir/lib/firmware/.git
+if [ "$deb_pkg_dir" != "/" ]; then
+    # We do not need to pack up the git repository itself :)
+    rm -rf $deb_pkg_dir/lib/firmware/.git
+
+    # We are a router - no need for GPU firmware BLOBs
+    rm -rf $deb_pkg_dir/lib/firmware/v4l-cx*
+    rm -rf $deb_pkg_dir/lib/firmware/s5p-mfc*
+    rm -rf $deb_pkg_dir/lib/firmware/nvidia
+    rm -rf $deb_pkg_dir/lib/firmware/amdgpu
+    rm -rf $deb_pkg_dir/lib/firmware/i915
+fi
 
 dpkg-deb --build $(basename $deb_pkg_dir)
