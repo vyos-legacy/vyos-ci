@@ -32,12 +32,26 @@ if [ "$deb_pkg_dir" != "/" ]; then
     # We do not need to pack up the git repository itself :)
     rm -rf $deb_pkg_dir/lib/firmware/.git
 
-    # We are a router - no need for GPU firmware BLOBs
+    # We are a router - no need for GPU firmware BLOBs and many other things
     rm -rf $deb_pkg_dir/lib/firmware/v4l-cx*
     rm -rf $deb_pkg_dir/lib/firmware/s5p-mfc*
     rm -rf $deb_pkg_dir/lib/firmware/nvidia
     rm -rf $deb_pkg_dir/lib/firmware/amdgpu
     rm -rf $deb_pkg_dir/lib/firmware/i915
+    rm -rf $deb_pkg_dir/lib/firmware/radeon
+    rm -rf $deb_pkg_dir/lib/firmware/matrox
+    rm -rf $deb_pkg_dir/lib/firmware/mediatek
+    rm -rf $deb_pkg_dir/lib/firmware/qed
+    rm -rf $deb_pkg_dir/lib/firmware/sb16
+    rm -rf $deb_pkg_dir/lib/firmware/ti-connectivity
+    rm -rf $deb_pkg_dir/lib/firmware/ueagle-atm
+    rm -rf $deb_pkg_dir/lib/firmware/dvb-*
+    rm -rf $deb_pkg_dir/lib/firmware/v4l-*
+    rm -rf $deb_pkg_dir/lib/firmware/i915
+    rm -rf $deb_pkg_dir/lib/firmware/qcom
+    rm -rf $deb_pkg_dir/lib/firmware/ctfw-*
+    rm -rf $deb_pkg_dir/lib/firmware/ct2fw-*
+    
 fi
 
 dpkg-deb --build $(basename $deb_pkg_dir)
