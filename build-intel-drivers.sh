@@ -25,6 +25,12 @@ for URL in $URLS
 do
      cd $pkgdir
      wget ${URL}
+     ret=$?
+     if [ "$ret" != "0" ]; then
+         echo "Download of ${URL} failed!"
+         exit $ret
+     fi
+
      filename=${URL##*/}
      dirname_full=$(echo $filename | awk -F".tar.gz" '{print $1}')
      dirname=$(echo $dirname_full | awk -F- '{print $1}')
