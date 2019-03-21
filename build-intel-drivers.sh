@@ -9,7 +9,7 @@ pkgdir="$basedir/intel"
 mkdir intel
 
 URLS=" \
-    https://downloadmirror.intel.com/14687/eng/ixgbe-5.5.3.tar.gz \
+    https://downloadmirror.intel.com/14687/eng/ixgbe-5.5.5.tar.gz \
     https://downloadmirror.intel.com/13663/eng/igb-5.3.5.22.tar.gz \
     https://downloadmirror.intel.com/15817/eng/e1000e-3.4.2.1.tar.gz \
     https://downloadmirror.intel.com/24411/eng/i40e-2.7.29.tar.gz \
