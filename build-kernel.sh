@@ -21,9 +21,7 @@ ARCH=$(dpkg --print-architecture)
 case "$ARCH" in
     amd64)
         make x86_64_vyos_defconfig
-        # for our CI build we can skip kernel_source and kernel_debug
-        TARGETS="kernel_headers kernel_image"
-
+        TARGETS="kernel_source kernel_debug kernel_headers kernel_image"
         # the following targets are not supported for Linux Kernels > 4.14 as
         # they have been removed from the Makefile (commits 18afab8c1d3c2 &
         # 22cba31bae9dc).

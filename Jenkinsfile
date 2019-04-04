@@ -91,13 +91,14 @@ node("jessie-amd64") {
                     '''
                 }
             },
-            "firmware": {
-                sh './build-kernel-firmware.sh'
-            }
+            "intel-drivers": {
+                sh './build-intel-drivers.sh'
+            },
         )
     }
+
     stage('Deploy') {
-        if ((currentBuild.result == null) ||currentBuild.result == 'SUCCESS' ()) {
+        if ((currentBuild.result == null) || currentBuild.result == 'SUCCESS' ()) {
             sshagent(['0b3ab595-5e67-420a-9a44-5cb1d508bedf']) {
                 sh """
                     #!/usr/bin/env bash
