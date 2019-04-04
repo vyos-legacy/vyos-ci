@@ -94,9 +94,6 @@ node("jessie-amd64") {
             "intel-drivers": {
                 sh './build-intel-drivers.sh'
             },
-            "firmware": {
-                sh './build-kernel-firmware.sh'
-            }
         )
     }
 
