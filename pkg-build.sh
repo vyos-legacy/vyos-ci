@@ -34,19 +34,19 @@ do
     PACKAGE=`echo ${PACKAGE} | cut -d'/' -f 2`
     SUBSTRING=`echo ${PACKAGE} | cut -d'_' -f 1`
     if [[ "${PACKAGE}" == *_all* ]]; then
-        ssh ${SSH_OPTS} ${SSH_HOST} -t "echo 'reprepro -v -b ${VYOS_REPO_PATH} remove ${VYOS_RELEASE} ${SUBSTRING}' | at -q b -v now"
+        ssh ${SSH_OPTS} ${SSH_HOST} -t "uncron-add 'reprepro -v -b ${VYOS_REPO_PATH} remove ${VYOS_RELEASE} ${SUBSTRING}'"
         exit_code
     else
-        ssh ${SSH_OPTS} ${SSH_HOST} -t "echo 'reprepro -v -b ${VYOS_REPO_PATH} -A ${ARCH} remove ${VYOS_RELEASE} ${SUBSTRING}' | at -q b -v now"
+        ssh ${SSH_OPTS} ${SSH_HOST} -t "uncron-add 'reprepro -v -b ${VYOS_REPO_PATH} -A ${ARCH} remove ${VYOS_RELEASE} ${SUBSTRING}'"
         exit_code
     fi
-    ssh ${SSH_OPTS} ${SSH_HOST} -t "echo 'reprepro -v -b ${VYOS_REPO_PATH} deleteunreferenced' | at -q b -v now"
+    ssh ${SSH_OPTS} ${SSH_HOST} -t "uncron-add 'reprepro -v -b ${VYOS_REPO_PATH} deleteunreferenced'"
     exit_code
     if [[ "${PACKAGE}" == *_all* ]]; then
-        ssh ${SSH_OPTS} ${SSH_HOST} -t "echo 'reprepro -v -b ${VYOS_REPO_PATH} includedeb ${VYOS_RELEASE} ${SSH_PATH}/${PACKAGE}' | at -q b -v now"
+        ssh ${SSH_OPTS} ${SSH_HOST} -t "uncron-add 'reprepro -v -b ${VYOS_REPO_PATH} includedeb ${VYOS_RELEASE} ${SSH_PATH}/${PACKAGE}'"
         exit_code
     else
-        ssh ${SSH_OPTS} ${SSH_HOST} -t "echo 'reprepro -v -b ${VYOS_REPO_PATH} -A ${ARCH} includedeb ${VYOS_RELEASE} ${SSH_PATH}/${PACKAGE}' | at -q b -v now"
+        ssh ${SSH_OPTS} ${SSH_HOST} -t "uncron-add 'reprepro -v -b ${VYOS_REPO_PATH} -A ${ARCH} includedeb ${VYOS_RELEASE} ${SSH_PATH}/${PACKAGE}'"
         exit_code
     fi
 done
