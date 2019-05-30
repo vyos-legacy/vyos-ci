@@ -2,19 +2,18 @@
 
 basedir=$(pwd)
 KERNEL_VER=$(cat $basedir/kernel-version)
-rm -rf intel vyos-intel-driver
-
-mkdir intel
 pkgdir="$basedir/intel"
-mkdir intel
+
+rm -rf $pkgdir vyos-intel-driver
+mkdir -p $pkgdir
 
 URLS=" \
-    https://downloadmirror.intel.com/14687/eng/ixgbe-5.5.5.tar.gz \
-    https://downloadmirror.intel.com/13663/eng/igb-5.3.5.22.tar.gz \
-    https://downloadmirror.intel.com/15817/eng/e1000e-3.4.2.1.tar.gz \
-    https://downloadmirror.intel.com/24411/eng/i40e-2.7.29.tar.gz \
-    https://downloadmirror.intel.com/28725/eng/ixgbevf-4.5.2.tar.gz \
-    https://downloadmirror.intel.com/24693/eng/i40evf-3.6.15.tar.gz \
+    https://sourceforge.net/projects/e1000/files/ixgbe%20stable/5.5.5/ixgbe-5.5.5.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/igb%20stable/5.3.5.22s/igb-5.3.5.22s.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/e1000e%20stable/3.4.2.4s/e1000e-3.4.2.4.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/i40e%20stable/2.8.43/i40e-2.8.43.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/ixgbevf%20stable/4.5.3/ixgbevf-4.5.3.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/i40evf%20stable/3.6.15/i40evf-3.6.15.tar.gz/download \
 "
 
 # The intel IGBVF driver can't be compiled with recent Kernel versions
@@ -24,14 +23,18 @@ URLS=" \
 for URL in $URLS
 do
      cd $pkgdir
-     wget ${URL}
+     # remove /download from URL
+     filename=${URL[@]/%\/download}
+     # only keep filename
+     filename=${filename##*/}
+
+     curl -L ${URL} > $filename
      ret=$?
      if [ "$ret" != "0" ]; then
          echo "Download of ${URL} failed!"
          exit $ret
      fi
 
-     filename=${URL##*/}
      dirname_full=$(echo $filename | awk -F".tar.gz" '{print $1}')
      dirname=$(echo $dirname_full | awk -F- '{print $1}')
      version="$(echo $dirname_full | awk -F- '{print $2}')-0"
