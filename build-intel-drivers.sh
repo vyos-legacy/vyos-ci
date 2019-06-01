@@ -24,7 +24,7 @@ for URL in $URLS
 do
      cd $pkgdir
      # remove /download from URL
-     filename=${URL[@]/%\/download}
+     filename=$(echo $URL | sed -e "s/\/download//")
      # only keep filename
      filename=${filename##*/}
 
