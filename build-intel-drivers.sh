@@ -10,7 +10,7 @@ mkdir -p $pkgdir
 URLS=" \
     https://sourceforge.net/projects/e1000/files/ixgbe%20stable/5.5.5/ixgbe-5.5.5.tar.gz/download \
     https://sourceforge.net/projects/e1000/files/igb%20stable/5.3.5.22s/igb-5.3.5.22s.tar.gz/download \
-    https://sourceforge.net/projects/e1000/files/e1000e%20stable/3.4.2.4s/e1000e-3.4.2.4.tar.gz/download \
+    https://sourceforge.net/projects/e1000/files/e1000e%20stable/3.4.2.4/e1000e-3.4.2.4.tar.gz/download \
     https://sourceforge.net/projects/e1000/files/i40e%20stable/2.7.29/i40e-2.7.29.tar.gz/download \
     https://sourceforge.net/projects/e1000/files/ixgbevf%20stable/4.5.3/ixgbevf-4.5.3.tar.gz/download \
     https://sourceforge.net/projects/e1000/files/i40evf%20stable/3.6.15/i40evf-3.6.15.tar.gz/download \
